@@ -1,8 +1,31 @@
-from django.forms import ModelForm
-from .models import Projeto
 from django import forms
+from .models import Projeto
+from tag.models import Tag
+from usuario.models import Usuario
 
-class ProjetoForm(ModelForm):
+class ProjetoForm(forms.ModelForm):
+
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all().order_by('nome'), 
+        widget=forms.CheckboxSelectMultiple(),
+        required=False,
+        label="Tags"
+    )
+
+    membros_selecionados = forms.ModelMultipleChoiceField(
+        queryset=Usuario.objects.filter(tipo='Aluno').order_by('nome'),
+        widget=forms.CheckboxSelectMultiple(),
+        required=False,
+        label="Alunos Membros do Projeto"
+    )
+
+    orientador_selecionado = forms.ModelChoiceField(
+        queryset=Usuario.objects.filter(tipo='Orientador').order_by('nome'), 
+        widget=forms.Select(attrs={'class': 'form-control select2-single', 'data-placeholder': "Selecione um orientador"}), 
+        required=False,
+        empty_label="Selecione um orientador", 
+        label="Orientador do Projeto"
+    )
 
     class Meta:
         model = Projeto

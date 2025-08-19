@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Listagem de Tags</h1>
+        <h4 class="card-description">
+          Aqui você pode visualizar todas as tags cadastradas.
+        </h4>
+
+        <a href="{% url 'tag:tag_add' %}" class="btn btn-primary mb-3">Cadastrar Nova Tag</a>
+
+        {% if tags %}
+        <div class="table-responsive"> 
+          <table class="table"> 
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for tag in tags %}
+              <tr>
+                <td>{{ tag.nome }}</td>
+                <td>
+                    <a href="{% url 'tag:tag_detail' id_tag=tag.id %}" class="btn btn-info btn-sm mr-1">Ver detalhes</a>
+                    <a href="{% url 'tag:tag_update' id_tag=tag.id %}" class="btn btn-warning btn-sm mr-1">Editar</a>
+                    <a href="{% url 'tag:tag_delete' id_tag=tag.id %}" class="btn btn-danger btn-sm mr-1">Excluir</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p>Nenhuma tag cadastrada ainda.
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -12,7 +12,20 @@ class Projeto(models.Model):
     referencias = models.TextField()
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True)
+    tags = models.ManyToManyField(
+        'tag.Tag',
+        through='projetotag.ProjetoTag',
+        related_name='projetos',
+        blank=True
+    )
+    membros = models.ManyToManyField(
+        'usuario.Usuario',
+        through='equipe.Equipe',
+        related_name='projetos_participados',
+        blank=True 
+    )
 
     def __str__(self):
         return self.nome
+
 

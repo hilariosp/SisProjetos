@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Cadastro de novo Critério</h1> 
+        <h4 class="card-description">
+          Preencha os campos abaixo para adicionar uma novo Critério.
+        </h4>
+
+        <form method="post" action="">
+          {% csrf_token %}
+          {{ form.as_p }}
+
+          <a href="{% url 'criterio:criterio_index' %}" class="btn btn-dark">Cancelar</a>
+          <button type="submit" class="btn btn-primary ml-2">Salvar</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
