@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Listagem de Usuários</h1>
+        <h4 class="card-description">
+          Aqui você pode visualizar todos os usuários cadastrados.
+        </h4>
+
+        <a href="{% url 'usuario:usuario_add' %}" class="btn btn-primary mb-3">Cadastrar Novo Usuário</a>
+
+        {% if usuario %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Nome Completo</th>
+                <th>Data de Nascimento</th>
+                <th>Tipo</th>
+                <th>Adicionado Em</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for usuarios in usuario %}
+                {% if not usuarios.is_superuser %} 
+                <tr>
+                    <td>{{ usuarios.username }}</td>
+                    <td>{{ usuarios.nome }}</td>
+                    <td>{{ usuarios.datanasc }}</td>
+                    <td>{{ usuarios.tipo }}</td> 
+                    <td>{{ usuarios.add_em|date:"d/m/Y H:i" }}</td>
+                    <td>
+                    <a href="{% url 'usuario:usuario_detail' id_usuario=usuarios.id %}" class="btn btn-info btn-sm mr-1">Ver detalhes</a>
+                    <a href="{% url 'usuario:usuario_update' id_usuario=usuarios.id %}" class="btn btn-warning btn-sm mr-1">Editar</a>
+                    <a href="{% url 'usuario:usuario_delete' id_usuario=usuarios.id %}" class="btn btn-danger btn-sm mr-1">Excluir</a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p>Nenhum usuário cadastrado ainda. <a href="{% url 'usuario:usuario_add' %}">Cadastre o primeiro!</a></p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

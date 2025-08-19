@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Listagem de Projetos</h1>
+        <h4 class="card-description">
+          Aqui você pode visualizar todos os projetos cadastrados.
+        </h4>
+
+        <a href="{% url 'projeto:projeto_add' %}" class="btn btn-primary mb-3">Cadastrar Novo Projeto</a>
+
+        {% if projetos %}
+        <div class="table-responsive"> 
+          <table class="table"> 
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Autor</th>
+                <th>Data de Criação</th>
+                <th>Última Atualização</th>
+                <th>Tags</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for projeto in projetos %}
+              <tr>
+                <td>{{ projeto.nome }}</td>
+                <td>
+                 <span class="pl-2">{{ projeto.autor.get_full_name|default:projeto.autor.username }}</span>
+                </td>
+                <td>{{ projeto.data_criacao|date:"d/m/Y H:i" }}</td>
+                <td>{{ projeto.data_atualizacao|date:"d/m/Y H:i" }}</td>
+                <td>
+                  {% for tag in projeto.tags.all %}
+                    <span class="badge badge-outline-info">{{ tag.nome }}</span>{% if not forloop.last %}, {% endif %}
+                  {% empty %}
+                    Nenhuma tag
+                  {% endfor %}
+                </td>
+                <td>
+                    <a href="{% url 'projeto:projeto_detail' id_projeto=projeto.id %}" class="btn btn-info btn-sm mr-1">Ver detalhes</a>
+                    <a href="{% url 'projeto:projeto_update' id_projeto=projeto.id %}" class="btn btn-warning btn-sm mr-1">Editar</a>
+                    <a href="{% url 'projeto:projeto_delete' id_projeto=projeto.id %}" class="btn btn-danger btn-sm mr-1">Excluir</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p>Nenhum projeto cadastrado ainda.
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
