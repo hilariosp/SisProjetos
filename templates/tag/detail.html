@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %} 
+
+{% block content %}
+{% spaceless %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+        <h1 class="card-title">Detalhes da Tag: {{ tag.nome }}</h1> 
+        <h4 class="card-description">Informações completas sobre a tag.</h4>
+
+        <div class="form-group d-flex align-items-center mb-3">
+          <label class="mb-0 mr-1 text-muted">Nome:</label>
+          <p class="form-control-static mb-0 font-weight-bold">{{ tag.nome }}</p> 
+        </div>
+        
+        <div class="mt-4"> 
+            <a href="{% url 'tag:tag_index' %}" class="btn btn-dark">Voltar para a Listagem</a>
+            <a href="{% url 'tag:tag_update' id_tag=tag.id %}" class="btn btn-warning ml-2">Editar Tag</a>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>
+{% endspaceless %}
+{% endblock %}

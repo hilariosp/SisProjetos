@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Listagem de Critérios</h1>
+        <h4 class="card-description">
+          Aqui você pode visualizar todos os critérios cadastradas.
+        </h4>
+
+        <a href="{% url 'criterio:criterio_add' %}" class="btn btn-primary mb-3">Cadastrar Novo Critério</a>
+
+        {% if criterios %}
+        <div class="table-responsive"> 
+          <table class="table"> 
+            <thead>
+              <tr>
+                <th>Nome do Critério</th>
+                <th>Descrição do Critério</th>
+                <th>Peso do Critério</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for criterio in criterios %}
+              <tr>
+                <td>{{ criterio.nome }}</td>
+                <td>{{ criterio.descricao }}</td>
+                <td>{{ criterio.peso|default:"1" }}</td>
+                <td>
+                    <a href="{% url 'criterio:criterio_detail' id_criterio=criterio.id %}" class="btn btn-info btn-sm mr-1">Ver detalhes</a>
+                    <a href="{% url 'criterio:criterio_update' id_criterio=criterio.id %}" class="btn btn-warning btn-sm mr-1">Editar</a>
+                    <a href="{% url 'criterio:criterio_delete' id_criterio=criterio.id %}" class="btn btn-danger btn-sm mr-1">Excluir</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p>Nenhum critério cadastrado ainda.
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

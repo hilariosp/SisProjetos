@@ -26,7 +26,19 @@ def add(request):
         form = ProjetoForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            projeto = form.save(commit=False)
+            projeto.autor = request.user
+            projeto.save()
+            tags = form.cleaned_data.get('tags')
+            if tags:
+                projeto.tags.set(tags)
+            membros = form.cleaned_data.get('membros_selecionados')
+            orientador = form.cleaned_data.get('orientador_selecionado')
+
+            if membros:
+                projeto.membros.add(*membros)
+            if orientador:
+                projeto.membros.add(orientador)
             return HttpResponseRedirect('/projeto/')
     else:
         form = ProjetoForm()
@@ -44,10 +56,29 @@ def update(request, id_projeto):  # CORRIGIDO
         form = ProjetoForm(request.POST, instance=projeto_obj)
 
         if form.is_valid():
-            form.save()
+            projeto = form.save()
+            tags = form.cleaned_data.get('tags')
+            projeto.tags.set(tags)
+
+            membros = form.cleaned_data.get('membros_selecionados')
+            orientador = form.cleaned_data.get('orientador_selecionado')
+
+            projeto.membros.clear()
+            if membros:
+                projeto.membros.add(*membros)
+            if orientador:
+                projeto.membros.add(orientador)
+
             return HttpResponseRedirect('/projeto/')
     else:
-        form = ProjetoForm(instance=projeto_obj)
+
+        initial_data = {
+            'membros_selecionados': projeto_obj.membros.filter(tipo='Aluno'),
+            'orientador_selecionado': projeto_obj.membros.filter(tipo='Orientador').first(),
+        }
+        form = ProjetoForm(instance=projeto_obj, initial=initial_data)
+        form.fields['tags'].initial = projeto_obj.tags.all()
+
 
     return render(request, 'projeto/update.html', { 'form': form })
 

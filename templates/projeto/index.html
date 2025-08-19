@@ -35,7 +35,7 @@
                 <td>{{ projeto.data_atualizacao|date:"d/m/Y H:i" }}</td>
                 <td>
                   {% for tag in projeto.tags.all %}
-                    <span class="badge badge-outline-info">{{ tag.nome }}</span>{% if not forloop.last %}, {% endif %}
+                  <label class="badge badge-info">{{ tag.nome }}</label>
                   {% empty %}
                     Nenhuma tag
                   {% endfor %}

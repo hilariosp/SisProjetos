@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %} 
+
+{% block content %}
+{% spaceless %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+        <h1 class="card-title">Detalhes do Critério: {{ criterio.nome }}</h1> 
+        <h4 class="card-description">Informações completas sobre o critério.</h4>
+
+        <div class="form-group d-flex align-items-center mb-3">
+          <label class="mb-0 mr-1 text-muted">Nome:</label>
+          <p class="form-control-static mb-0 font-weight-bold">{{ criterio.nome }}</p> 
+        </div>
+        <div class="form-group mb-3"> 
+          <label class="text-muted">Descrição:</label>
+          <p class="form-control-static">{{ criterio.descricao|default:"" }}</p>
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="text-muted">Peso:</label>
+          <p class="form-control-static">{{ criterio.peso|default:"1" }}</p>
+        </div>
+        
+        <div class="mt-4"> 
+            <a href="{% url 'criterio:criterio_index' %}" class="btn btn-dark">Voltar para a Listagem</a>
+            <a href="{% url 'criterio:criterio_update' id_criterio=criterio.id %}" class="btn btn-warning ml-2">Editar Critério</a>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>
+{% endspaceless %}
+{% endblock %}
