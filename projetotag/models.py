@@ -1,8 +1,10 @@
 from django.db import models
 
 class ProjetoTag(models.Model):
+    
     projeto = models.ForeignKey('projeto.Projeto', on_delete=models.CASCADE)
     tag = models.ForeignKey('tag.Tag', on_delete=models.CASCADE)
+    
     class Meta:
         unique_together = ('projeto', 'tag')
         verbose_name = 'Projeto Tag'

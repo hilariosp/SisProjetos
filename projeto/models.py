@@ -18,11 +18,10 @@ class Projeto(models.Model):
         related_name='projetos',
         blank=True
     )
-    membros = models.ManyToManyField(
-        'usuario.Usuario',
-        through='equipe.Equipe',
-        related_name='projetos_participados',
-        blank=True 
+    equipe = models.ForeignKey(
+        'equipe.Equipe',
+        related_name='equipe_projeto',
+        blank=True
     )
 
     def __str__(self):

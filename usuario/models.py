@@ -1,14 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Group
+from django.contrib.auth.models import User, Group
 
-class Usuario(AbstractUser):
+class Usuario(User):
 
     TIPOS = (
         ('Aluno', 'Aluno'),
         ('Orientador', 'Orientador'),
         ('Avaliador', 'Avaliador'),
     )
-
 
     nome = models.CharField(max_length=100, null=True, blank=True)
     datanasc = models.DateField(null=True, blank=True)
