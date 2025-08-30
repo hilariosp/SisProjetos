@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Listagem de Equipes</h1>
+        <h4 class="card-description">
+          Aqui você pode visualizar todos os equipes cadastradas.
+        </h4>
+
+        <a href="{% url 'equipe:equipe_add' %}" class="btn btn-primary mb-3">Cadastrar Novo Equipe</a>
+
+        {% if equipes %}
+        <div class="table-responsive"> 
+          <table class="table"> 
+            <thead>
+              <tr>
+                <th>Nome do Equipe</th>
+                <th>Descrição do Equipe</th>
+                <th>Peso do Equipe</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for equipe in equipes %}
+              <tr>
+                <td>{{ equipe.nome }}</td>
+                <td>{{ equipe.descricao }}</td>
+                <td>{{ equipe.peso|default:"1" }}</td>
+                <td>
+                    <a href="{% url 'equipe:equipe_detail' id_equipe=equipe.id %}" class="btn btn-info btn-sm mr-1">Ver detalhes</a>
+                    <a href="{% url 'equipe:equipe_update' id_equipe=equipe.id %}" class="btn btn-warning btn-sm mr-1">Editar</a>
+                    <a href="{% url 'equipe:equipe_delete' id_equipe=equipe.id %}" class="btn btn-danger btn-sm mr-1">Excluir</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p>Nenhum equipe cadastrado ainda.
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
