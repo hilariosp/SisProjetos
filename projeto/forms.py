@@ -14,12 +14,13 @@ class ProjetoForm(forms.ModelForm):
 
     equipe = forms.ModelChoiceField(
         queryset=Equipe.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control p_input'}),
         required=False,
         label="Equipe"
     )
     class Meta:
         model = Projeto
-        fields = ['nome', 'introducao', 'resumo', 'referencial_teorico', 'desenvolvimento', 'resultados', 'conclusao', 'referencias']
+        fields = ['nome', 'introducao', 'resumo', 'referencial_teorico', 'desenvolvimento', 'resultados', 'conclusao', 'referencias', 'equipe', 'tags']        
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control p_input'}),
             'introducao': forms.Textarea(attrs={'class': 'form-control p_input', 'rows': 5}),

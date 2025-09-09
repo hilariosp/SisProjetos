@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     "projetotag",
     "equipe",
     "criterio",
-    # "avaliacao",
-    # "barema",
+    "avaliacao",
+    "barema",
+    "notacriterio",
 ]
 
 MIDDLEWARE = [

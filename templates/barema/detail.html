@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %} 
+
+{% block content %}
+{% spaceless %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+        <h1 class="card-title">Detalhes do barema: {{ barema.nome }}</h1> 
+        <h4 class="card-description">Informações completas sobre o barema.</h4>
+
+        <div class="form-group d-flex align-items-center mb-3"> 
+          <label class="mb-0 mr-1 text-muted">Autor:</label> 
+          <p class="form-control-static mb-0 font-weight-bold">{{ barema.autor.get_full_name|default:barema.autor.username|default:"" }}</p> 
+        </div>
+
+        <div class="form-group d-flex align-items-center mb-3">
+          <label class="mb-0 mr-1 text-muted">Nome:</label>
+          <p class="form-control-static mb-0 font-weight-bold">{{ barema.nome|default:"" }}</p> 
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="text-muted">Equipe:</label>
+          <p class="form-control-static font-weight-bold">{{ barema.equipe.nome|default:"Nenhuma equipe associada" }}</p>
+          {% if barema.equipe %}
+            <ul class="list-group list-group-flush" style="background-color: transparent; border: 1px solid white;">
+              <li class="list-group-item disabled text-muted" style="background-color: transparent;">Membros da Equipe:</li>
+              {% for membro in barema.equipe.membros.all %}
+                <li class="list-group-item" style="background-color: transparent;">{{ membro.get_full_name|default:membro.username }}</li>
+              {% empty %}
+                <li class="list-group-item" style="background-color: transparent;">Nenhum membro nesta equipe.</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="text-muted">Tags:</label>
+          <div>
+            {% for tag in barema.tags.all %}
+              <span class="badge badge-dark">{{ tag.nome }}</span>
+            {% empty %}
+              <p class="form-control-static">Nenhuma tag associada.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="form-group mb-3"> 
+          <label class="text-muted">Introdução:</label>
+          <p class="form-control-static">{{ barema.introducao|default:"" }}</p>
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="text-muted">Resumo:</label>
+          <p class="form-control-static">{{ barema.resumo|default:"" }}</p>
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="text-muted">Referencial Teórico:</label>
+          <p class="form-control-static">{{ barema.referencial_teorico|default:"" }}</p>
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="text-muted">Desenvolvimento:</label>
+          <p class="form-control-static">{{ barema.desenvolvimento|default:"" }}</p>
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="text-muted">Resultados:</label>
+          <p class="form-control-static">{{ barema.resultados|default:"" }}</p>
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="text-muted">Conclusão:</label>
+          <p class="form-control-static">{{ barema.conclusao|default:"" }}</p>
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="text-muted">Referências:</label>
+          <p class="form-control-static">{{ barema.referencias|default:"" }}</p>
+        </div>
+
+        <div class="form-group d-flex align-items-center mb-3">
+          <label class="mb-0 mr-1 text-muted">Data de Criação:</label>
+          <p class="form-control-static mb-0">{{ barema.data_criacao|date:"d/m/Y H:i"|default:"" }}</p>
+        </div>
+
+        <div class="form-group d-flex align-items-center mb-3">
+          <label class="mb-0 mr-1 text-muted">Última Atualização:</label>
+          <p class="form-control-static mb-0">{{ barema.data_atualizacao|date:"d/m/Y H:i"|default:"" }}</p> 
+        </div>
+        
+        <div class="mt-4"> 
+            <a href="{% url 'barema:barema_index' %}" class="btn btn-dark">Voltar para a Listagem</a>
+            <a href="{% url 'barema:barema_update' id_barema=barema.id %}" class="btn btn-warning ml-2">Editar barema</a>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>
+{% endspaceless %}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Listagem de baremas</h1>
+        <h4 class="card-description">
+          Aqui você pode visualizar todos os baremas cadastrados.
+        </h4>
+
+        <a href="{% url 'barema:barema_add' %}" class="btn btn-primary mb-3">Cadastrar Novo barema</a>
+
+        {% if baremas %}
+        <div class="table-responsive"> 
+          <table class="table"> 
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for barema in baremas %}
+              <tr>
+                <td>{{ barema.nome }}</td>
+                <td>
+                    <a href="{% url 'barema:barema_detail' id_barema=barema.id %}" class="btn btn-info btn-sm mr-1">Ver detalhes</a>
+                    <a href="{% url 'barema:barema_update' id_barema=barema.id %}" class="btn btn-warning btn-sm mr-1">Editar</a>
+                    <a href="{% url 'barema:barema_delete' id_barema=barema.id %}" class="btn btn-danger btn-sm mr-1">Excluir</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p>Nenhum barema cadastrado ainda.
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

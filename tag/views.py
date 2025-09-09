@@ -18,7 +18,7 @@ def detail(request, id_tag):
     return render(request, 'tag/detail.html', {'tag': tag})
 
 @login_required
-@permission_required('tag.add_tag', raise_exception=True)
+# @permission_required('tag.add_tag', raise_exception=True)
 def add(request): 
 
     if request.method == 'POST':

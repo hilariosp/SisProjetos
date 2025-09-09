@@ -5,7 +5,6 @@ class Usuario(User):
 
     TIPOS = (
         ('Aluno', 'Aluno'),
-        ('Orientador', 'Orientador'),
         ('Avaliador', 'Avaliador'),
     )
 
