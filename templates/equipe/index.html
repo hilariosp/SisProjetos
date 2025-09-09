@@ -17,8 +17,7 @@
             <thead>
               <tr>
                 <th>Nome do Equipe</th>
-                <th>Descrição do Equipe</th>
-                <th>Peso do Equipe</th>
+                <th>Data de Criação da Equipe</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -26,8 +25,7 @@
               {% for equipe in equipes %}
               <tr>
                 <td>{{ equipe.nome }}</td>
-                <td>{{ equipe.descricao }}</td>
-                <td>{{ equipe.peso|default:"1" }}</td>
+                <td>{{ equipe.membroequipe_set.first.data_entrada|date:"d/m/Y" }}</td>
                 <td>
                     <a href="{% url 'equipe:equipe_detail' id_equipe=equipe.id %}" class="btn btn-info btn-sm mr-1">Ver detalhes</a>
                     <a href="{% url 'equipe:equipe_update' id_equipe=equipe.id %}" class="btn btn-warning btn-sm mr-1">Editar</a>

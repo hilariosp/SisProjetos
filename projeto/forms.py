@@ -1,7 +1,7 @@
 from django import forms
 from .models import Projeto
 from tag.models import Tag
-from usuario.models import Usuario
+from equipe.models import Equipe
 
 class ProjetoForm(forms.ModelForm):
 
@@ -12,21 +12,11 @@ class ProjetoForm(forms.ModelForm):
         label="Tags"
     )
 
-    membros_selecionados = forms.ModelMultipleChoiceField(
-        queryset=Usuario.objects.filter(tipo='Aluno').order_by('nome'),
-        widget=forms.CheckboxSelectMultiple(),
+    equipe = forms.ModelChoiceField(
+        queryset=Equipe.objects.all(),
         required=False,
-        label="Alunos Membros do Projeto"
+        label="Equipe"
     )
-
-    orientador_selecionado = forms.ModelChoiceField(
-        queryset=Usuario.objects.filter(tipo='Orientador').order_by('nome'), 
-        widget=forms.Select(attrs={'class': 'form-control select2-single', 'data-placeholder': "Selecione um orientador"}), 
-        required=False,
-        empty_label="Selecione um orientador", 
-        label="Orientador do Projeto"
-    )
-
     class Meta:
         model = Projeto
         fields = ['nome', 'introducao', 'resumo', 'referencial_teorico', 'desenvolvimento', 'resultados', 'conclusao', 'referencias']

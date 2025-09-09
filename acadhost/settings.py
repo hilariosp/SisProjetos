@@ -37,12 +37,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # "projeto",
+    "projeto",
     "usuario",
-    # "tag",
-    # "projetotag",
+    "tag",
+    "projetotag",
     "equipe",
-    # "criterio",
+    "criterio",
     # "avaliacao",
     # "barema",
 ]
@@ -91,8 +91,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
-AUTH_USER_MODEL = 'usuario.Usuario'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

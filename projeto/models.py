@@ -1,7 +1,11 @@
 from django.db import models
 
 class Projeto(models.Model):
-    autor = models.ForeignKey('usuario.Usuario', on_delete=models.CASCADE, related_name='projetos_autorados')
+    autor = models.ForeignKey(
+        'usuario.Usuario', 
+        on_delete=models.CASCADE, 
+        related_name='projetos_autorados'
+    )
     nome = models.CharField(max_length=200)
     introducao = models.TextField()
     resumo = models.TextField()
@@ -21,10 +25,9 @@ class Projeto(models.Model):
     equipe = models.ForeignKey(
         'equipe.Equipe',
         related_name='equipe_projeto',
-        blank=True
+        null=True,
+        on_delete=models.SET_NULL
     )
 
     def __str__(self):
         return self.nome
-
-
