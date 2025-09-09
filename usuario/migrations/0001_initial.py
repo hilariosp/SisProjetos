@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                     "tipo",
                     models.CharField(
                         blank=True,
-                        choices=[("Aluno", "Aluno"), ("Avaliador", "Avaliador")],
+                        choices=[("Aluno", "Aluno"), ("Gestor", "Gestor")],
                         max_length=20,
                     ),
                 ),

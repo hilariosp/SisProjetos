@@ -23,25 +23,15 @@ def add(request):
     if request.method == 'POST':
         form = ProjetoForm(request.POST)
         if form.is_valid():
-            # 1. Salva o formulário, mas sem salvar as tags ainda (commit=False)
             projeto_instance = form.save(commit=False)
-            
-            # 2. Atribui o autor corretamente
             projeto_instance.autor = request.user
-            
-            # 3. Salva a instância principal do projeto no banco
-            projeto_instance.save()
-            
-            # 4. Agora, salva a relação ManyToMany (as tags)
-            #    Esta é a linha mais importante!
-            form.save_m2m()
-            
-            return redirect('projeto:projeto_index') # Redireciona para a lista de projetos
+            projeto_instance.save()            
+            form.save_m2m()            
+            return redirect('projeto:projeto_index')
     else:
         form = ProjetoForm()
-        # Limita a seleção do autor ao usuário logado, se necessário
-        form.fields['autor'].initial = request.user
-        form.fields['autor'].widget = forms.HiddenInput()
+        # form.fields['autor'].initial = request.user
+        # form.fields['autor'].widget = forms.HiddenInput()
 
 
     return render(request, 'projeto/add.html', {'form': form})

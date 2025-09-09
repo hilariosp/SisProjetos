@@ -53,7 +53,7 @@ def _processar_formulario_avaliacao(request, instance=None):
                     # Limpa notas antigas para garantir consistência na edição
                     avaliacao.notas_dos_criterios.all().delete()
                     
-                    # Usa os critérios do barema que foi salvo com a avaliação
+                    # Usa os critérios do barema que foi salvo com a avaliaçã
                     criterios_do_barema = avaliacao.barema.criterios.all()
 
                     for criterio in criterios_do_barema:
@@ -85,7 +85,7 @@ def _processar_formulario_avaliacao(request, instance=None):
     return form
 
 @login_required
-@permission_required('avaliacao.add_avaliacao', raise_exception=True)
+# @permission_required('avaliacao.add_avaliacao', raise_exception=True)
 def add(request): 
     # A lógica principal de processamento foi movida para a função helper
     form = _processar_formulario_avaliacao(request)

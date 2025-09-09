@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     "projeto",
     "usuario",
     "tag",
-    "projetotag",
     "equipe",
     "criterio",
     "avaliacao",
@@ -135,6 +134,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_URL= '/accounts/login/'
+LOGIN_URL= 'login'
 LOGIN_REDIRECT_URL= '/usuario/'
-LOGOUT_REDIRECT_URL ='/accounts/login/'
+LOGOUT_REDIRECT_URL ='index'
