@@ -3,54 +3,66 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h1 class="card-title">Cadastro de nova Avaliação</h1> 
-        <h4 class="card-description">
-          Preencha os campos abaixo para adicionar uma nova Avaliação.
-        </h4>
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Nova Avaliação</h1>
+                <h4 class="card-description">Preencha os campos abaixo.</h4>
 
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
-              {{ message }}
+                <form method="post" action="{% url 'avaliacao:avaliacao_add' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <hr>
+                    
+                    <h3>Critérios de Avaliação</h3>
+                    <div id="criterios-container">
+                        <p class="text-muted">Selecione um barema para carregar os critérios.</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="{% url 'avaliacao:avaliacao_index' %}" class="btn btn-dark">Cancelar</a>
+                        <button type="submit" class="btn btn-primary ml-2">Salvar Avaliação</button>
+                    </div>
+                </form>
+
             </div>
-          {% endfor %}
-        {% endif %}
-
-        <form method="post" action="">
-          {% csrf_token %}
-          {{ form.as_p }}
-
-          <hr>
-          <h4 class="card-description">Notas por Critério (0 a 10)</h4>
-
-          {% for item in criterios_com_notas %}
-            <div class="form-group">
-                <label for="nota_criterio_{{ item.criterio.id }}">
-                    <strong>{{ item.criterio.nome }} (Peso: {{ item.criterio.peso }})</strong>
-                </label>
-                <p class="text-muted" style="margin-bottom: 5px;">{{ item.criterio.descricao }}</p>
-                <input 
-                    type="number" 
-                    class="form-control" 
-                    name="nota_criterio_{{ item.criterio.id }}" 
-                    id="nota_criterio_{{ item.criterio.id }}" 
-                    value="{{ item.nota_atual|default:0 }}" 
-                    min="0" 
-                    max="10" 
-                    required
-                >
-            </div>
-          {% endfor %}
-
-          <a href="{% url 'avaliacao:avaliacao_index' %}" class="btn btn-dark">Cancelar</a>
-          <button type="submit" class="btn btn-primary ml-2">Salvar</button>
-        </form>
-
-      </div>
+        </div>
     </div>
-  </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const baremaSelect = document.getElementById('id_barema'); // O Django normalmente cria o ID como 'id_nome-do-campo'
+    const criteriosContainer = document.getElementById('criterios-container');
+
+    if (baremaSelect) {
+        baremaSelect.addEventListener('change', function() {
+            const baremaId = this.value;
+
+            if (baremaId) {
+                // Monta a URL para a nossa nova view
+                const url = `/avaliacao/carregar-criterios/${baremaId}/`;
+
+                // Faz a requisição para buscar os critérios
+                fetch(url)
+                    .then(response => response.text()) // Pega a resposta como texto (HTML)
+                    .then(html => {
+                        // Coloca o HTML recebido dentro do container
+                        criteriosContainer.innerHTML = html;
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar os critérios:', error);
+                        criteriosContainer.innerHTML = '<p class="text-danger">Não foi possível carregar os critérios.</p>';
+                    });
+            } else {
+                // Se nenhum barema for selecionado, limpa o container
+                criteriosContainer.innerHTML = '<p class="text-muted">Selecione um barema para carregar os critérios.</p>';
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

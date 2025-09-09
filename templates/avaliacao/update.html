@@ -3,54 +3,69 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h1 class="card-title">Editar Avaliação</h1> 
-        <h4 class="card-description">
-          Altere os campos abaixo para atualizar a avaliação do projeto <strong>{{ instance.projeto.nome }}</strong>.
-        </h4>
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Editar Avaliação</h1>
+                <h4 class="card-description">
+                    Modifique os campos e as notas dos critérios abaixo.
+                </h4>
 
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-              {{ message }}
+                {# A action do formulário aponta para a view de update, passando o ID da avaliação #}
+                <form method="post" action="{% url 'avaliacao:avaliacao_update' instance.id %}">
+                    {% csrf_token %}
+                    
+                    {{ form.as_p }}
+
+                    <hr>
+                    
+                    <h3>Critérios de Avaliação</h3>
+                    {# Este container já vem preenchido com os critérios e notas existentes #}
+                    <div id="criterios-container">
+                        {% include 'avaliacao/partials/criterios_fields_update.html' with criterios_com_notas=criterios_com_notas %}
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="{% url 'avaliacao:avaliacao_index' %}" class="btn btn-dark">Cancelar</a>
+                        <button type="submit" class="btn btn-primary ml-2">Atualizar Avaliação</button>
+                    </div>
+                </form>
+
             </div>
-          {% endfor %}
-        {% endif %}
-
-        <form method="post" action="">
-          {% csrf_token %}
-          {{ form.as_p }}
-
-          <hr>
-          <h4 class="card-description">Notas por Critério (0 a 10)</h4>
-
-          {% for item in criterios_com_notas %}
-            <div class="form-group">
-                <label for="nota_criterio_{{ item.criterio.id }}">
-                    <strong>{{ item.criterio.nome }} (Peso: {{ item.criterio.peso }})</strong>
-                </label>
-                <p class="text-muted" style="margin-bottom: 5px;">{{ item.criterio.descricao }}</p>
-                <input 
-                    type="number" 
-                    class="form-control" 
-                    name="nota_criterio_{{ item.criterio.id }}" 
-                    id="nota_criterio_{{ item.criterio.id }}" 
-                    value="{{ item.nota_atual }}" 
-                    min="0" 
-                    max="10" 
-                    required
-                >
-            </div>
-          {% endfor %}
-
-          <a href="{% url 'avaliacao:avaliacao_index' %}" class="btn btn-dark">Cancelar</a>
-          <button type="submit" class="btn btn-primary ml-2">Salvar Alterações</button>
-        </form>
-
-      </div>
+        </div>
     </div>
-  </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const baremaSelect = document.getElementById('id_barema');
+    const criteriosContainer = document.getElementById('criterios-container');
+
+    if (baremaSelect) {
+        baremaSelect.addEventListener('change', function() {
+            const baremaId = this.value;
+
+            if (baremaId) {
+                // A URL para carregar os critérios é a mesma do 'add'
+                const url = `/avaliacao/carregar-criterios/${baremaId}/`;
+
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        // Se o usuário mudar o barema, os novos critérios (vazios) são carregados
+                        criteriosContainer.innerHTML = html;
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar os critérios:', error);
+                        criteriosContainer.innerHTML = '<p class="text-danger">Não foi possível carregar os critérios.</p>';
+                    });
+            } else {
+                criteriosContainer.innerHTML = '<p class="text-muted">Selecione um barema para carregar os critérios.</p>';
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

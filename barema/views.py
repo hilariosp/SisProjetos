@@ -23,10 +23,8 @@ def add(request):
     if request.method == 'POST':
         form = BaremaForm(request.POST)
         if form.is_valid():
-            # ModelForms com ManyToMany precisam primeiro salvar a instância principal
             barema_instance = form.save(commit=False)
             barema_instance.save()
-            # E depois salvar a relação ManyToMany
             form.save_m2m()
             return HttpResponseRedirect('/barema/')
     else:

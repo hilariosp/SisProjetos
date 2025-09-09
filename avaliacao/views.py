@@ -8,6 +8,7 @@ from barema.models import Barema
 from criterio.models import Criterio
 from notacriterio.models import NotaCriterio
 from .forms import AvaliacaoForm
+from django.http import HttpResponse
 
 @login_required
 def index(request): 
@@ -146,3 +147,10 @@ def delete(request, id_avaliacao):
     avaliacao.delete()
     messages.success(request, f"Avaliação do projeto '{avaliacao.projeto.nome}' foi excluída.")
     return redirect('avaliacao:avaliacao_index')
+
+@login_required
+def carregar_criterios_barema(request, id_barema):
+
+    barema = get_object_or_404(Barema.objects.prefetch_related('criterios'), id=id_barema)
+    criterios = barema.criterios.all().order_by('nome')
+    return render(request, 'avaliacao/partials/criterios_fields.html', {'criterios': criterios})

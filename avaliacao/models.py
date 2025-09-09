@@ -2,6 +2,7 @@ from django.db import models
 from usuario.models import Usuario
 from projeto.models import Projeto
 from barema.models import Barema
+from decimal import Decimal
 
 class Avaliacao(models.Model):
 
@@ -17,7 +18,20 @@ class Avaliacao(models.Model):
 
     def recalcular_e_salvar_nota_final(self):
 
-        from django.db.models import Sum
-        soma = self.notas_dos_criterios.aggregate(soma_total=Sum('nota'))['soma_total']
-        self.nota_final = soma if soma is not None else 0
+        soma_ponderada = Decimal('0.0')
+        soma_dos_pesos = 0
+
+        for nota_criterio in self.notas_dos_criterios.select_related('criterio').all():
+            nota = Decimal(nota_criterio.nota)
+            peso = nota_criterio.criterio.peso
+            
+            soma_ponderada += nota * peso
+            soma_dos_pesos += peso
+
+
+        if soma_dos_pesos > 0:
+            self.nota_final = soma_ponderada / Decimal(soma_dos_pesos)
+        else:
+            self.nota_final = Decimal('0.0')
+            
         self.save()

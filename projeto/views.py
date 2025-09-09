@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from .models import Projeto
 from .forms import ProjetoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+from django import forms
 
 @login_required
 def index(request): 
@@ -17,30 +18,36 @@ def detail(request, id_projeto):
     return render(request, 'projeto/detail.html', {'projeto': projeto_obj})
 
 @login_required
-@permission_required('projeto.add_Projeto', raise_exception=True)
+# @permission_required('projeto.add_Projeto', raise_exception=True)
 def add(request):
-
     if request.method == 'POST':
-
         form = ProjetoForm(request.POST)
-
         if form.is_valid():
-
-            projeto = form.save(commit=False)
-            projeto.autor = request.user.usuario
-            projeto.save()
-
-            tags_selecionadas = form.cleaned_data.get('tags')
-            projeto.tags.set(tags_selecionadas)
+            # 1. Salva o formulário, mas sem salvar as tags ainda (commit=False)
+            projeto_instance = form.save(commit=False)
             
-            return HttpResponseRedirect('/projeto/')
+            # 2. Atribui o autor corretamente
+            projeto_instance.autor = request.user
+            
+            # 3. Salva a instância principal do projeto no banco
+            projeto_instance.save()
+            
+            # 4. Agora, salva a relação ManyToMany (as tags)
+            #    Esta é a linha mais importante!
+            form.save_m2m()
+            
+            return redirect('projeto:projeto_index') # Redireciona para a lista de projetos
     else:
         form = ProjetoForm()
+        # Limita a seleção do autor ao usuário logado, se necessário
+        form.fields['autor'].initial = request.user
+        form.fields['autor'].widget = forms.HiddenInput()
+
 
     return render(request, 'projeto/add.html', {'form': form})
 
 @login_required
-@permission_required('projeto.change_Projeto', raise_exception=True)
+# @permission_required('projeto.change_Projeto', raise_exception=True)
 def update(request, id_projeto):
     projeto = Projeto.objects.get(id=id_projeto)
 
@@ -61,7 +68,7 @@ def update(request, id_projeto):
 
 
 @login_required
-@permission_required('projeto.delete_projeto', raise_exception=True)
+# @permission_required('projeto.delete_projeto', raise_exception=True)
 def delete(request, id_projeto):  
 
     Projeto.objects.filter(id=id_projeto).delete()

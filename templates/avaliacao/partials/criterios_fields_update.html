@@ -1,0 +1,20 @@
+{% for item in criterios_com_notas %}
+<div class="form-group">
+    <label for="nota_criterio_{{ item.criterio.id }}">
+        {{ item.criterio.nome }} (Peso: {{ item.criterio.peso }})
+    </label>
+    <input type="number" 
+           name="nota_criterio_{{ item.criterio.id }}" 
+           id="nota_criterio_{{ item.criterio.id }}"
+           class="form-control" 
+           min="0" 
+           max="10"
+           value="{{ item.nota_atual }}" {# Preenche o campo com a nota existente #}
+           required>
+    <small class="form-text text-muted">{{ item.criterio.descricao }}</small>
+</div>
+{% empty %}
+<div class="alert alert-warning" role="alert">
+  Este barema não possui critérios cadastrados.
+</div>
+{% endfor %}

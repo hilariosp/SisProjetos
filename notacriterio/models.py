@@ -5,7 +5,7 @@ from avaliacao.models import Avaliacao
 class NotaCriterio(models.Model):
     avaliacao = models.ForeignKey(Avaliacao, on_delete=models.CASCADE, related_name="notas_dos_criterios")
     criterio = models.ForeignKey(Criterio, on_delete=models.CASCADE, related_name="notas_recebidas")
-    nota = models.PositiveIntegerField()
+    nota = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
 
     class Meta:
         unique_together = ('avaliacao', 'criterio')

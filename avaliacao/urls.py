@@ -10,5 +10,6 @@ urlpatterns = [
     path('<int:id_avaliacao>/', views.detail, name='avaliacao_detail'),
     path('update/<int:id_avaliacao>/', views.update, name='avaliacao_update'),
     path('delete/<int:id_avaliacao>/', views.delete, name='avaliacao_delete'),
+    path('carregar-criterios/<int:id_barema>/', views.carregar_criterios_barema, name='carregar_criterios_barema'),
 
 ]
