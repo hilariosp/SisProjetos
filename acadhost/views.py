@@ -14,8 +14,9 @@ def index(request):
         projetos = projetos.filter(
             Q(nome__icontains=query_busca) |
             Q(resumo__icontains=query_busca) |
-            Q(autor_first_name_icontains=query_busca) | # Busca pelo primeiro nome do autor
-            Q(autor_last_name_icontains=query_busca)   # Busca pelo sobrenome do autor
+            Q(autor__nome__icontains=query_busca) |
+            Q(equipe__nome__icontains=query_busca) 
+
         )
 
     # 2. Aplica o filtro de ORDENAÇÃO
