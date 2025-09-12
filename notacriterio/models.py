@@ -9,4 +9,4 @@ class NotaCriterio(models.Model):
     comentario_criterio = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.criterio}: {self.nota}"
+        return f"{self.criterio} de {self.avaliacao}: {self.nota}"

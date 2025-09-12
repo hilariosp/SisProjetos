@@ -1,25 +1,52 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block content %}
+{% spaceless %}
 <div class="row">
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h1 class="card-title">Nova Avaliação</h1>
-                <h4 class="card-description">Preencha os campos abaixo.</h4>
+                <h1 class="card-title">Adicionar Avaliação</h1>
+                <h4 class="card-description">Preencha os detalhes da avaliação e as notas para cada critério.</h4>
 
-                <form method="post" action="">
+                <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                
-                    <a href="{% url 'avaliacao:avaliacao_index' %}" class="btn btn-dark">Cancelar</a>
-                    <button type="submit" class="btn btn-primary ml-2">Salvar Avaliação</button>
-                    </div>
-                </form>
+                    {{ avaliacao_form.as_p }}
 
+                    <hr>
+
+                    <h5>Notas por Critério</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="font-weight-bold">Critério</th>
+                                    <th class="text-center font-weight-bold">Peso</th>
+                                    <th class="text-center font-weight-bold">Nota</th>
+                                    <th class="font-weight-bold">Comentário</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ formset.management_form }}
+                                {% for form, criterio in combined_forms %}
+                                <tr>
+                                    <td>
+                                        {{ criterio.nome }}
+                                        {{ form.criterio_id }}
+                                    </td>
+                                    <td class="text-center">{{ criterio.peso }}</td>
+                                    <td>{{ form.nota }}</td>
+                                    <td>{{ form.comentario_criterio }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Salvar Avaliação</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+{% endspaceless %}
 {% endblock %}

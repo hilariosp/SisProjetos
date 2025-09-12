@@ -6,70 +6,74 @@
 <div class="row">
   <div class="col-12 grid-margin stretch-card">
     <div class="card">
-      <div class ="card-body">
-        <h1 class="card-title">Detalhes da Avaliação</h1>
-        <h4 class="card-description">Informações completas sobre a avaliação do projeto.</h4>
+      <div class ="card-body">
+        <h1 class="card-title">Detalhes da Avaliação</h1>
+        <h4 class="card-description">Informações completas sobre a avaliação do projeto.</h4>
 
-        <div class="form-group d-flex align-items-center mb-3">
-          <label class="mb-0 mr-2 text-muted">Projeto Avaliado:</label>
-          <p class="form-control-static mb-0 font-weight-bold">{{ avaliacao.projeto.nome|default:"N/A" }}</p>
-        </div>
+        <div class="form-group d-flex align-items-center mb-3">
+          <label class="mb-0 mr-2 text-muted">Projeto Avaliado:</label>
+          <p class="form-control-static mb-0 font-weight-bold">{{ avaliacao.projeto.nome|default:"N/A" }}</p>
+        </div>
 
-        <div class="form-group d-flex align-items-center mb-3">
-          <label class="mb-0 mr-2 text-muted">Avaliador:</label>
-          <p class="form-control-static mb-0 font-weight-bold">{{ avaliacao.avaliador.get_full_name|default:avaliacao.avaliador.username }}</p>
-        </div>
-        
-        <div class="form-group d-flex align-items-center mb-3">
-          <label class="mb-0 mr-2 text-muted">Data da Avaliação:</label>
-          <p class="form-control-static mb-0">{{ avaliacao.data_avaliacao|date:"d/m/Y H:i" }}</p>
-        </div>
+        <div class="form-group d-flex align-items-center mb-3">
+          <label class="mb-0 mr-2 text-muted">Avaliador:</label>
+          <p class="form-control-static mb-0 font-weight-bold">{{ avaliacao.avaliador.get_full_name|default:avaliacao.avaliador.username }}</p>
+        </div>
+        
+        <div class="form-group d-flex align-items-center mb-3">
+          <label class="mb-0 mr-2 text-muted">Data da Avaliação:</label>
+          <p class="form-control-static mb-0">{{ avaliacao.data_avaliacao|date:"d/m/Y H:i" }}</p>
+        </div>
 
-        <div class="form-group mb-4">
-          <label class="text-muted">Feedback Geral:</label>
-          <p class="form-control-static border p-3 rounded">{{ avaliacao.comentario|linebreaksbr|default:"Nenhum feedback fornecido." }}</p>
-        </div>
+        <div class="form-group mb-4">
+          <label class="text-muted">Feedback Geral:</label>
+          <p class="form-control-static border p-3 rounded">{{ avaliacao.comentario|linebreaksbr|default:"Nenhum feedback fornecido." }}</p>
+        </div>
 
-        <hr>
+        <hr>
 
-        <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-            <h5 class="mb-0">Notas por Critério</h5>
-            <div class="text-right">
-                <h5 class="mb-0 text-muted">Nota Final</h5>
-                <h2 class="text-primary font-weight-bold"><strong>{{ avaliacao.nota_final }}</strong><small>/100</small></h2>
-            </div>
-        </div>
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+            <h5 class="mb-0">Notas por Critério</h5>
+            <div class="text-right">
+                <h5 class="mb-0 text-muted">Nota Final</h5>
+                <h2 class="text-primary font-weight-bold"><strong>{{ avaliacao.nota_final }}</strong><small>/100</small></h2>
+            </div>
+        </div>
 
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="font-weight-bold">Critério</th>
-                        <th class="font-weight-bold">Descrição</th>
-                        <th class="text-center font-weight-bold">Peso</th>
-                        <th class="text-center font-weight-bold">Nota</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in avaliacao.barema.all %}
-                    <tr>
-                        <td>{{ item.criterio.nome }}</td>
-                        <td>{{ item.criterio.descricao }}</td>
-                        <td class="text-center">{{ item.criterio.peso }}</td>
-                        <td class="text-center font-weight-bold">{{ item.nota }} / {{ item.criterio.peso }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4" class="text-center">Nenhuma nota de critério foi encontrada para esta avaliação.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="font-weight-bold">Critério</th>
+                        <th class="font-weight-bold">Descrição</th>
+                        <th class="text-center font-weight-bold">Peso</th>
+                        <th class="text-center font-weight-bold">Nota</th>
+                        <th class="font-weight-bold">Comentário</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nota_criterio in avaliacao.notas_criterios.all %}
+                    <tr>
+                        <td>{{ nota_criterio.criterio.nome }}</td>
+                        <td>{{ nota_criterio.criterio.descricao }}</td>
+                        <td class="text-center">{{ nota_criterio.criterio.peso }}</td>
+                        <td class="text-center font-weight-bold">{{ nota_criterio.nota }}</td>
+                        <td>{{ nota_criterio.comentario_criterio|default:"Nenhum comentário fornecido." }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Nenhuma nota de critério foi encontrada para esta avaliação.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">
+            <a href="{% url 'avaliacao:avaliacao_index' %}" class="btn btn-dark">Voltar para a listagem</a>
         </div>
-      </div>
-    </div>
-  </div>
+      </div>
+    </div>
+  </div>
 </div>
-
 {% endspaceless %}
 {% endblock %}

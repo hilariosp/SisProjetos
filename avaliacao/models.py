@@ -19,7 +19,7 @@ class Avaliacao(models.Model):
         soma_ponderada = Decimal('0.0')
         soma_dos_pesos = 0
 
-        for nota_criterio in self.notas_dos_criterios.select_related('criterio').all():
+        for nota_criterio in self.notas_criterios.select_related('criterio').all():
             nota = Decimal(nota_criterio.nota)
             peso = nota_criterio.criterio.peso
             

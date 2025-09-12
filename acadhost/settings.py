@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "criterio",
     "avaliacao",
     "barema",
+    "notacriterio",
 ]
 
 MIDDLEWARE = [
