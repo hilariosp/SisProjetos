@@ -1,262 +1,66 @@
-{% load static %}
-{% spaceless %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>ACADHOST</title>
-<link rel="stylesheet" href="{% static "assets/vendors/mdi/css/materialdesignicons.min.css" %}">
-<link rel="stylesheet" href="{% static "assets/vendors/css/vendor.bundle.base.css" %}">
-<link rel="stylesheet" href="{% static "assets/css/style.css" %}">
-<link rel="shortcut icon" href="{% static "assets/images/favicon.png" %}"/>
-</head>
-<body>
-    <div class="container-scroller">
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-          <a class="sidebar-brand brand-logo" href="{% url 'index' %}"><img src="{% static "assets/images/logo.svg" %}" alt="logo" /></a>
-          <a class="sidebar-brand brand-logo-mini" href="{% url 'index' %}"><img src="{% static "assets/images/logo-mini.svg" %}" alt="logo" /></a>
-        </div>
-        <ul class="nav">
-          {% if user.is_authenticated %}
-          <li class="nav-item profile">
-            <div class="profile-desc">
-              <div class="profile-pic">
-                <div class="profile-name">
-                  <h5 class="mb-0 font-weight-normal">{{ user.username }}</h5>
-                  <span>    {% if user.groups.all %}
-                    {{ user.groups.all.0 }}
-                      {% else %}
-                          Administrador
-                      {% endif %}
-                  </span>
-                </div>
-              </div>
-              <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
-              <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
-                
-                                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-                  {% csrf_token %}
-                </form>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-logout text-danger"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">Sair</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </li>
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        <form method="GET" action="">
+          <div class="d-flex align-items-center justify-content-between p-3 mb-4" style="border-radius:6px;">
+
+
+          <a class="fw-bold text-primary" href="">Áreas Temáticas</a>
+            
+            <div class="flex-grow-1 mx-3">
+              <input type="text" name="q" class="form-control" placeholder="Busca por Publicações..." value="{{ request.GET.q }}">
+            </div>
+
+            <select name="filtro" class="form-control" style="width: 20%;" onchange="this.form.submit()">
+              <option value="" {% if not request.GET.filtro %}selected{% endif %}>Últimas Publicações</option>
+              <option value="antiga-publicacao" {% if request.GET.filtro == 'antiga-publicacao' %}selected{% endif %}>Antigas Publicações</option>
+              <option value="a-z" {% if request.GET.filtro == 'a-z' %}selected{% endif %}>A-Z</option>
+              <option value="z-a" {% if request.GET.filtro == 'z-a' %}selected{% endif %}>Z-A</option>
+            </select>
+            
+
+          </div>
+        </form>
+
+        <h2 class="card-title mb-3">Resultados</h2>
+
+        {% if projetos %}
+        <div class="table-responsive"> 
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Autor</th>
+                <th>Equipe</th>
+                <th>Data de Criação</th>
+                <th>Última Atualização</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for projeto in projetos %}
+              <tr>
+                <td>{{ projeto.nome }}</td>
+                <td>{{ projeto.autor.get_full_name|default:projeto.autor.username }}</td>
+                <td>{{ projeto.equipe.nome|default:"Nenhuma equipe" }}</td>
+                <td>{{ projeto.data_criacao|date:"d/m/Y H:i" }}</td>
+                <td>{{ projeto.data_atualizacao|date:"d/m/Y H:i" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
         {% else %}
-        <li class="nav-item">
-            <a class="nav-link btn create-new-button" href="{% url 'login' %}">Login</a>
-        </li>
-          {% endif %}
-          <li class="nav-item nav-category">
-            <span class="nav-link">Navegação</span>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'index' %}">
-              <span class="menu-icon">
-                <i class="mdi mdi-home"></i>
-              </span>
-              <span class="menu-title">Página Inicial</span>
-            </a>
-          </li>
+        <p class="text-muted">Nenhum projeto encontrado com os filtros aplicados.</p>
+        {% endif %}
 
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'avaliacao:avaliacao_index' %}">
-              <span class="menu-icon">
-                <i class="mdi mdi-check-decagram"></i>
-              </span>
-              <span class="menu-title">Avaliações</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'criterio:criterio_index' %}">
-              <span class="menu-icon">
-                <i class="mdi mdi-format-list-checks"></i>
-              </span>
-              <span class="menu-title">Critérios</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'equipe:equipe_index' %}">
-              <span class="menu-icon">
-                <i class="mdi mdi-account-multiple"></i>
-              </span>
-              <span class="menu-title">Equipes</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'projeto:projeto_index' %}">
-              <span class="menu-icon">
-                <i class="mdi mdi-folder-multiple"></i>
-              </span>
-              <span class="menu-title">Projetos</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'tag:tag_index' %}">
-              <span class="menu-icon">
-                <i class="mdi mdi-tag-multiple"></i>
-              </span>
-              <span class="menu-title">Tags</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'usuario:usuario_index' %}">
-              <span class="menu-icon">
-                <i class="mdi mdi-account-group"></i>
-              </span>
-              <span class="menu-title">Usuários</span>
-            </a>
-          </li>
-          </ul>
-      </nav>
-            <div class="container-fluid page-body-wrapper">
-          <div class="main-panel" style="background-color: black;">
-          <div class="content-wrapper">
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h2 class="card-title">Bem-vindo(a) ao ACADHOST!</h2>
-                            <p class="card-description">
-                                O ACADHOST é um sistema completo para gerenciamento de projetos acadêmicos. Aqui você pode cadastrar projetos, gerenciar equipes, definir critérios de avaliação, atribuir notas e muito mais.
-                            </p>
-                            <p class="card-description">
-                                Use o menu lateral para navegar entre as diferentes seções do sistema e começar a organizar seus projetos.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Como o sistema funciona?</h3>
-                            <p>
-                                O ACADHOST foi projetado para simplificar a gestão de projetos acadêmicos. Ele permite que professores e alunos interajam em um ambiente organizado, onde é possível:
-                            </p>
-                            <ul>
-                                <li>Criar e gerenciar projetos, atribuindo-os a equipes específicas.</li>
-                                <li>Definir critérios de avaliação detalhados para garantir um feedback justo e consistente.</li>
-                                <li>Avaliar os projetos com base nos critérios estabelecidos.</li>
-                                <li>Gerenciar usuários e equipes, mantendo o controle sobre as permissões e o progresso de cada membro.</li>
-                            </ul>
-                            <p>
-                                A navegação é simples e intuitiva, com todas as funcionalidades acessíveis através do menu lateral.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">A importância do ACADHOST</h3>
-                            <p>
-                                O ACADHOST é crucial para otimizar o fluxo de trabalho em ambientes acadêmicos. Ele elimina a necessidade de planilhas e documentos dispersos, centralizando todas as informações em um único local seguro. Com ele, você pode:
-                            </p>
-                            <ul>
-                                <li>Reduzir a carga administrativa, economizando tempo valioso.</li>
-                                <li>Aumentar a transparência no processo de avaliação.</li>
-                                <li>Proporcionar uma experiência de aprendizado mais estruturada e organizada para os alunos.</li>
-                                <li>Facilitar a colaboração entre os membros das equipes e os professores.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Funcionalidades do Sistema</h3>
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="card-title"><i class="mdi mdi-check-decagram"></i> Avaliações</h4>
-                                            <p>Gerencie todas as avaliações dos projetos. Aqui, você pode visualizar, adicionar e editar as notas atribuídas a cada projeto com base nos critérios definidos.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="card-title"><i class="mdi mdi-format-list-checks"></i> Critérios</h4>
-                                            <p>Crie e organize os critérios de avaliação que serão usados para julgar os projetos. Esta funcionalidade garante que todas as avaliações sejam consistentes e justas.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="card-title"><i class="mdi mdi-account-multiple"></i> Equipes</h4>
-                                            <p>Cadastre e gerencie as equipes de trabalho. Atribua membros a cada equipe e acompanhe o progresso de forma colaborativa.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="card-title"><i class="mdi mdi-folder-multiple"></i> Projetos</h4>
-                                            <p>Crie, edite e visualize todos os projetos acadêmicos. Associe cada projeto a uma equipe e a um conjunto de tags para melhor organização.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="card-title"><i class="mdi mdi-tag-multiple"></i> Tags</h4>
-                                            <p>Gerencie tags para categorizar e filtrar projetos facilmente. Esta funcionalidade é útil para organizar projetos por tema, disciplina ou status.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="card-title"><i class="mdi mdi-account-group"></i> Usuários</h4>
-                                            <p>Administre os usuários do sistema. Adicione novos usuários, defina suas funções (por exemplo, professor ou aluno) e gerencie suas permissões.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-                              <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
-            </div>
-          </footer>
-                  </div>
-              </div>
-          </div>
-            <script src="{% static "assets/vendors/js/vendor.bundle.base.js" %}"></script>
-                    <script src="{% static "assets/js/off-canvas.js" %}"></script>
-    <script src="{% static "assets/js/hoverable-collapse.js" %}"></script>
-    <script src="{% static "assets/js/misc.js" %}"></script>
-    <script src="{% static "assets/js/settings.js" %}"></script>
-    <script src="{% static "assets/js/todolist.js" %}"></script>
-
-{% endspaceless %}
-
-  </body>
-</html>
-
+{% endblock %}
