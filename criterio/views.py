@@ -2,8 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import Criterio  
 from .forms import CriterioForm
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 @login_required
 def index(request): 
@@ -54,7 +53,7 @@ def update(request, id_criterio):
 @login_required
 @permission_required('criterio.delete_criterio', raise_exception=True)
 def delete(request, id_criterio):
-    #recuperar a criterio do banco de dados 
+
     Criterio.objects.filter(id=id_criterio).delete()
 
     return HttpResponseRedirect('/criterio/')

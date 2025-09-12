@@ -5,7 +5,7 @@ class Equipe(models.Model):
     nome = models.CharField(max_length=100)
 
     membros = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
+        'usuario.Usuario',
         through='MembroEquipe',
         related_name='equipes'
     )
@@ -15,8 +15,8 @@ class Equipe(models.Model):
 
 class MembroEquipe(models.Model):
 
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    equipe = models.ForeignKey(Equipe, on_delete=models.CASCADE)
+    usuario = models.ForeignKey('usuario.Usuario', on_delete=models.CASCADE)
+    equipe = models.ForeignKey('equipe.Equipe', on_delete=models.CASCADE)
     data_entrada = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

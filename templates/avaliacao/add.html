@@ -9,20 +9,12 @@
                 <h1 class="card-title">Nova Avaliação</h1>
                 <h4 class="card-description">Preencha os campos abaixo.</h4>
 
-                <form method="post" action="{% url 'avaliacao:avaliacao_add' %}">
+                <form method="post" action="">
                     {% csrf_token %}
                     {{ form.as_p }}
-
-                    <hr>
-                    
-                    <h3>Critérios de Avaliação</h3>
-                    <div id="criterios-container">
-                        <p class="text-muted">Selecione um barema para carregar os critérios.</p>
-                    </div>
-
-                    <div class="mt-4">
-                        <a href="{% url 'avaliacao:avaliacao_index' %}" class="btn btn-dark">Cancelar</a>
-                        <button type="submit" class="btn btn-primary ml-2">Salvar Avaliação</button>
+                
+                    <a href="{% url 'avaliacao:avaliacao_index' %}" class="btn btn-dark">Cancelar</a>
+                    <button type="submit" class="btn btn-primary ml-2">Salvar Avaliação</button>
                     </div>
                 </form>
 
@@ -30,39 +22,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const baremaSelect = document.getElementById('id_barema'); // O Django normalmente cria o ID como 'id_nome-do-campo'
-    const criteriosContainer = document.getElementById('criterios-container');
-
-    if (baremaSelect) {
-        baremaSelect.addEventListener('change', function() {
-            const baremaId = this.value;
-
-            if (baremaId) {
-                // Monta a URL para a nossa nova view
-                const url = `/avaliacao/carregar-criterios/${baremaId}/`;
-
-                // Faz a requisição para buscar os critérios
-                fetch(url)
-                    .then(response => response.text()) // Pega a resposta como texto (HTML)
-                    .then(html => {
-                        // Coloca o HTML recebido dentro do container
-                        criteriosContainer.innerHTML = html;
-                    })
-                    .catch(error => {
-                        console.error('Erro ao carregar os critérios:', error);
-                        criteriosContainer.innerHTML = '<p class="text-danger">Não foi possível carregar os critérios.</p>';
-                    });
-            } else {
-                // Se nenhum barema for selecionado, limpa o container
-                criteriosContainer.innerHTML = '<p class="text-muted">Selecione um barema para carregar os critérios.</p>';
-            }
-        });
-    }
-});
-</script>
 {% endblock %}

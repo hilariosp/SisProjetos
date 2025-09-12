@@ -1,14 +1,12 @@
 from django.db import models
-from criterio.models import Criterio
-from avaliacao.models import Avaliacao
 
 class NotaCriterio(models.Model):
-    avaliacao = models.ForeignKey(Avaliacao, on_delete=models.CASCADE, related_name="notas_dos_criterios")
-    criterio = models.ForeignKey(Criterio, on_delete=models.CASCADE, related_name="notas_recebidas")
-    nota = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
 
-    class Meta:
-        unique_together = ('avaliacao', 'criterio')
+    avaliador = models.ForeignKey('usuario.Usuario', on_delete=models.CASCADE, related_name='notas_criterios')
+    avaliacao = models.ForeignKey('avaliacao.Avaliacao', on_delete=models.CASCADE, related_name='notas_criterios')
+    criterio = models.ForeignKey('criterio.Criterio', on_delete=models.CASCADE, related_name='notas_criterios')
+    nota = models.PositiveIntegerField()
+    comentario_criterio = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Nota para '{self.criterio.descricao[:20]}...': {self.nota}"
+        return f"{self.criterio}: {self.nota}"

@@ -1,17 +1,14 @@
 {% extends "base.html" %}
-{% load static %}
-
 {% block content %}
 <div class="row">
-    <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Avaliações</h4>
-                <p class="card-description">
-                    Listagem de todas as avaliações cadastradas.
-                    <a href="{% url 'avaliacao:avaliacao_add' %}" class="btn btn-primary btn-sm float-right">Adicionar Nova Avaliação</a>
-                </p>
-
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title">Listagem de Avaliações</h1>
+          <h4 class="card-description">
+            Aqui você pode visualizar todas as avaliações cadastradas.
+          </h4>
+          <a href="{% url 'avaliacao:avaliacao_add' %}" class="btn btn-primary mb-3">Cadastrar Nova Avaliação</a>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -27,15 +24,15 @@
                             {% for avaliacao in avaliacoes %}
                             <tr>
                                 <td>{{ avaliacao.projeto.nome }}</td>
-                                <td>{{ avaliacao.avaliador.get_full_name|default:avaliacao.avaliador.username }}</td>
+                                <td>{{ avaliacao.avaliador }}</td>
                                 <td>{{ avaliacao.data_avaliacao|date:"d/m/Y" }}</td>
                                 <td>
                                     <span class="badge badge-success">{{ avaliacao.nota_final }} / 10,00</span>
                                 </td>
                                 <td>
-                                    <a href="{% url 'avaliacao:avaliacao_detail' avaliacao.id %}" class="btn btn-info btn-sm">Ver Detalhes</a>
-                                    <a href="{% url 'avaliacao:avaliacao_update' avaliacao.id %}" class="btn btn-warning btn-sm">Editar</a>
-                                    <a href="#" onclick="showDeleteModal('{% url 'avaliacao:avaliacao_delete' avaliacao.id %}')" class="btn btn-danger btn-sm">Excluir</a>
+                                    <a href="{% url 'avaliacao:avaliacao_detail' id_avaliacao=avaliacao.id %}" class="btn btn-info btn-sm mr-1">Ver Detalhes</a>
+                                    <a href="{% url 'avaliacao:avaliacao_update' id_avaliacao=avaliacao.id %}" class="btn btn-warning btn-sm mr-1">Editar</a>
+                                    <a href="{% url 'avaliacao:avaliacao_delete' id_avaliacao=avaliacao.id %}" class="btn btn-danger btn-sm">Excluir</a>
                                 </td>
                             </tr>
                             {% empty %}
@@ -50,31 +47,4 @@
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmar Exclusão</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Tem certeza de que deseja excluir esta avaliação?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <a id="deleteConfirmBtn" href="#" class="btn btn-danger">Excluir</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-function showDeleteModal(url) {
-  document.getElementById('deleteConfirmBtn').href = url;
-  $('#deleteModal').modal('show');
-}
-</script>
 {% endblock %}

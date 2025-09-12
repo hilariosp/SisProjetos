@@ -2,9 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from .models import Projeto
 from .forms import ProjetoForm
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import permission_required
-from django import forms
+from usuario.models import Usuario
+from django.contrib.auth.decorators import login_required, permission_required
 
 @login_required
 def index(request): 
@@ -18,26 +17,23 @@ def detail(request, id_projeto):
     return render(request, 'projeto/detail.html', {'projeto': projeto_obj})
 
 @login_required
-# @permission_required('projeto.add_Projeto', raise_exception=True)
+@permission_required('projeto.add_Projeto', raise_exception=True)
 def add(request):
     if request.method == 'POST':
         form = ProjetoForm(request.POST)
         if form.is_valid():
             projeto_instance = form.save(commit=False)
-            projeto_instance.autor = request.user
+            projeto_instance.autor = Usuario.objects.get(id=request.user.id)
             projeto_instance.save()            
             form.save_m2m()            
             return redirect('projeto:projeto_index')
     else:
         form = ProjetoForm()
-        # form.fields['autor'].initial = request.user
-        # form.fields['autor'].widget = forms.HiddenInput()
-
 
     return render(request, 'projeto/add.html', {'form': form})
 
 @login_required
-# @permission_required('projeto.change_Projeto', raise_exception=True)
+@permission_required('projeto.change_Projeto', raise_exception=True)
 def update(request, id_projeto):
     projeto = Projeto.objects.get(id=id_projeto)
 
@@ -58,7 +54,7 @@ def update(request, id_projeto):
 
 
 @login_required
-# @permission_required('projeto.delete_projeto', raise_exception=True)
+@permission_required('projeto.delete_projeto', raise_exception=True)
 def delete(request, id_projeto):  
 
     Projeto.objects.filter(id=id_projeto).delete()

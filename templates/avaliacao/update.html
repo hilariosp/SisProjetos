@@ -12,18 +12,10 @@
                 </h4>
 
                 {# A action do formulário aponta para a view de update, passando o ID da avaliação #}
-                <form method="post" action="{% url 'avaliacao:avaliacao_update' instance.id %}">
+                <form method="post">
                     {% csrf_token %}
                     
                     {{ form.as_p }}
-
-                    <hr>
-                    
-                    <h3>Critérios de Avaliação</h3>
-                    {# Este container já vem preenchido com os critérios e notas existentes #}
-                    <div id="criterios-container">
-                        {% include 'avaliacao/partials/criterios_fields_update.html' with criterios_com_notas=criterios_com_notas %}
-                    </div>
 
                     <div class="mt-4">
                         <a href="{% url 'avaliacao:avaliacao_index' %}" class="btn btn-dark">Cancelar</a>

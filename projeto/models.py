@@ -1,12 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
-from equipe.models import Equipe
-from tag.models import Tag
 
 class Projeto(models.Model):
     nome = models.CharField(max_length=100)
-    autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projetos')
-    equipe = models.ForeignKey(Equipe, on_delete=models.SET_NULL, null=True, blank=True, related_name='projetos')
+    autor = models.ForeignKey('usuario.Usuario', on_delete=models.CASCADE, related_name='projetos')
+    equipe = models.ForeignKey('equipe.Equipe', on_delete=models.SET_NULL, null=True, blank=True, related_name='projetos')
     introducao = models.TextField()
     resumo = models.TextField()
     referencial_teorico = models.TextField()
@@ -16,15 +13,9 @@ class Projeto(models.Model):
     referencias = models.TextField()
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField('tag.Tag', through='ProjetoTag', related_name='projetos')
+    tags = models.ManyToManyField('tag.Tag', related_name='projetos')
 
     def __str__(self):
         return self.nome
     
-class ProjetoTag(models.Model):
-    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.projeto.nome} → {self.tag.nome}'
     

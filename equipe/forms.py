@@ -1,13 +1,12 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from .models import Equipe
-
-User = get_user_model()
+from usuario.models import Usuario
 
 class EquipeForm(forms.ModelForm):
 
     membros = forms.ModelMultipleChoiceField(
-            queryset=User.objects.all(), 
+            queryset=Usuario.objects.all(), 
             widget=forms.CheckboxSelectMultiple(),
             required=False,
             label="Membros da Equipe"

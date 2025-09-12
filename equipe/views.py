@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from .models import Equipe  
+from .models import Equipe
 from .forms import EquipeForm
 from django.contrib.auth.decorators import login_required, permission_required
 
