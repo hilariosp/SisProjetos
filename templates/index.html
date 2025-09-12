@@ -23,10 +23,6 @@
           <li class="nav-item profile">
             <div class="profile-desc">
               <div class="profile-pic">
-                <div class="count-indicator">
-                  <img class="img-xs rounded-circle " src="{% static 'assets/images/faces/face15.jpg' %}" alt="">
-                  <span class="count bg-success"></span>
-                </div>
                 <div class="profile-name">
                   <h5 class="mb-0 font-weight-normal">{{ user.username }}</h5>
                   <span>    {% if user.groups.all %}
@@ -51,17 +47,6 @@
                   </div>
                   <div class="preview-item-content">
                     <p class="preview-subject ellipsis mb-1 text-small">Sair</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-onepassword  text-info"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">Mudar Senha</p>
                   </div>
                 </a>
               </div>
@@ -137,6 +122,122 @@
             <div class="container-fluid page-body-wrapper">
           <div class="main-panel" style="background-color: black;">
           <div class="content-wrapper">
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Bem-vindo(a) ao ACADHOST!</h2>
+                            <p class="card-description">
+                                O ACADHOST é um sistema completo para gerenciamento de projetos acadêmicos. Aqui você pode cadastrar projetos, gerenciar equipes, definir critérios de avaliação, atribuir notas e muito mais.
+                            </p>
+                            <p class="card-description">
+                                Use o menu lateral para navegar entre as diferentes seções do sistema e começar a organizar seus projetos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Como o sistema funciona?</h3>
+                            <p>
+                                O ACADHOST foi projetado para simplificar a gestão de projetos acadêmicos. Ele permite que professores e alunos interajam em um ambiente organizado, onde é possível:
+                            </p>
+                            <ul>
+                                <li>Criar e gerenciar projetos, atribuindo-os a equipes específicas.</li>
+                                <li>Definir critérios de avaliação detalhados para garantir um feedback justo e consistente.</li>
+                                <li>Avaliar os projetos com base nos critérios estabelecidos.</li>
+                                <li>Gerenciar usuários e equipes, mantendo o controle sobre as permissões e o progresso de cada membro.</li>
+                            </ul>
+                            <p>
+                                A navegação é simples e intuitiva, com todas as funcionalidades acessíveis através do menu lateral.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">A importância do ACADHOST</h3>
+                            <p>
+                                O ACADHOST é crucial para otimizar o fluxo de trabalho em ambientes acadêmicos. Ele elimina a necessidade de planilhas e documentos dispersos, centralizando todas as informações em um único local seguro. Com ele, você pode:
+                            </p>
+                            <ul>
+                                <li>Reduzir a carga administrativa, economizando tempo valioso.</li>
+                                <li>Aumentar a transparência no processo de avaliação.</li>
+                                <li>Proporcionar uma experiência de aprendizado mais estruturada e organizada para os alunos.</li>
+                                <li>Facilitar a colaboração entre os membros das equipes e os professores.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Funcionalidades do Sistema</h3>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><i class="mdi mdi-check-decagram"></i> Avaliações</h4>
+                                            <p>Gerencie todas as avaliações dos projetos. Aqui, você pode visualizar, adicionar e editar as notas atribuídas a cada projeto com base nos critérios definidos.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><i class="mdi mdi-format-list-checks"></i> Critérios</h4>
+                                            <p>Crie e organize os critérios de avaliação que serão usados para julgar os projetos. Esta funcionalidade garante que todas as avaliações sejam consistentes e justas.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><i class="mdi mdi-account-multiple"></i> Equipes</h4>
+                                            <p>Cadastre e gerencie as equipes de trabalho. Atribua membros a cada equipe e acompanhe o progresso de forma colaborativa.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><i class="mdi mdi-folder-multiple"></i> Projetos</h4>
+                                            <p>Crie, edite e visualize todos os projetos acadêmicos. Associe cada projeto a uma equipe e a um conjunto de tags para melhor organização.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><i class="mdi mdi-tag-multiple"></i> Tags</h4>
+                                            <p>Gerencie tags para categorizar e filtrar projetos facilmente. Esta funcionalidade é útil para organizar projetos por tema, disciplina ou status.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><i class="mdi mdi-account-group"></i> Usuários</h4>
+                                            <p>Administre os usuários do sistema. Adicione novos usuários, defina suas funções (por exemplo, professor ou aluno) e gerencie suas permissões.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </div>
                               <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -158,3 +259,4 @@
 
   </body>
 </html>
+
