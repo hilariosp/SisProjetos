@@ -5,12 +5,14 @@ from .forms import EquipeForm
 from django.contrib.auth.decorators import login_required, permission_required
 
 @login_required
+@permission_required('equipe.view_equipe', raise_exception=True)
 def index(request): 
 
     equipes = Equipe.objects.all()
     return render(request, 'equipe/index.html', {'equipes': equipes})
 
 @login_required
+@permission_required('equipe.view_equipe', raise_exception=True)
 def detail(request, id_equipe):
 
     equipe = Equipe.objects.get(id=id_equipe)

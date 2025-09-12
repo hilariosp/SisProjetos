@@ -6,19 +6,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
 @login_required
-def index(request): 
+@permission_required('tag.view_tag', raise_exception=True) 
+def index(request):
 
     tags = Tag.objects.all()
     return render(request, 'tag/index.html', {'tags': tags})
 
 @login_required
+@permission_required('tag.view_tag', raise_exception=True) 
 def detail(request, id_tag):
 
     tag = Tag.objects.get(id=id_tag)
     return render(request, 'tag/detail.html', {'tag': tag})
 
 @login_required
-# @permission_required('tag.add_tag', raise_exception=True)
+@permission_required('tag.add_tag', raise_exception=True)
 def add(request): 
 
     if request.method == 'POST':

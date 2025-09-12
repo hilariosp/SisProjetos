@@ -5,12 +5,15 @@ from .forms import CriterioForm
 from django.contrib.auth.decorators import login_required, permission_required
 
 @login_required
+@permission_required('criterio.view_criterio', raise_exception=True)
+
 def index(request): 
 
     criterios = Criterio.objects.all()
     return render(request, 'criterio/index.html', {'criterios': criterios})
 
 @login_required
+@permission_required('criterio.view_criterio', raise_exception=True)
 def detail(request, id_criterio):
 
     criterio = Criterio.objects.get(id=id_criterio)

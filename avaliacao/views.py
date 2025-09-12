@@ -15,8 +15,8 @@ def index(request):
     return render(request, 'avaliacao/index.html', {'avaliacoes': avaliacoes})
 
 @login_required
+@permission_required('avaliacao.view_avaliacao', raise_exception=True)
 def detail(request, id_avaliacao):
-    # Pré-carrega as notas de critério e os critérios relacionados
     avaliacao = get_object_or_404(Avaliacao.objects.prefetch_related('notas_criterios__criterio'), pk=id_avaliacao)
     return render(request, 'avaliacao/detail.html', {'avaliacao': avaliacao})
 

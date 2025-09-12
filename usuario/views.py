@@ -4,11 +4,13 @@ from .models import Usuario
 from .forms import UsuarioForm, UsuarioEditForm
 
 @login_required
-@permission_required('usuario.delete_usuario', raise_exception=True) 
+@permission_required('usuario.view_usuario', raise_exception=True)
 def index(request):
     usuario = Usuario.objects.all().order_by('nome') 
     return render(request, 'usuario/index.html', {'usuario': usuario})
 
+@login_required
+@permission_required('usuario.add_usuario', raise_exception=True)
 def add(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
@@ -20,7 +22,7 @@ def add(request):
     return render(request, 'usuario/add.html', {'form': form})
 
 @login_required
-@permission_required('usuario.delete_usuario', raise_exception=True) 
+@permission_required('usuario.view_usuario', raise_exception=True) 
 def detail(request, id_usuario):
     usuario = get_object_or_404(Usuario, id=id_usuario)
     return render(request, 'usuario/detail.html', {'usuario': usuario})

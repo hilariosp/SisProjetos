@@ -6,18 +6,20 @@ from usuario.models import Usuario
 from django.contrib.auth.decorators import login_required, permission_required
 
 @login_required
+@permission_required('projeto.view_projeto', raise_exception=True)
 def index(request): 
 
     Projetos = Projeto.objects.all()
     return render(request, 'projeto/index.html', {'projetos': Projetos})
 
 @login_required
+@permission_required('projeto.view_projeto', raise_exception=True)
 def detail(request, id_projeto):
     projeto_obj = Projeto.objects.get(id=id_projeto)
     return render(request, 'projeto/detail.html', {'projeto': projeto_obj})
 
 @login_required
-@permission_required('projeto.add_Projeto', raise_exception=True)
+@permission_required('projeto.add_projeto', raise_exception=True)
 def add(request):
     if request.method == 'POST':
         form = ProjetoForm(request.POST)
@@ -33,7 +35,7 @@ def add(request):
     return render(request, 'projeto/add.html', {'form': form})
 
 @login_required
-@permission_required('projeto.change_Projeto', raise_exception=True)
+@permission_required('projeto.change_projeto', raise_exception=True)
 def update(request, id_projeto):
     projeto = Projeto.objects.get(id=id_projeto)
 
