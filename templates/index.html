@@ -39,6 +39,8 @@
                 <th>Equipe</th>
                 <th>Data de Criação</th>
                 <th>Última Atualização</th>
+                <th>Tags</th>
+                <th>Visualizar projeto</th>
               </tr>
             </thead>
             <tbody>
@@ -49,6 +51,14 @@
                 <td>{{ projeto.equipe.nome|default:"Nenhuma equipe" }}</td>
                 <td>{{ projeto.data_criacao|date:"d/m/Y H:i" }}</td>
                 <td>{{ projeto.data_atualizacao|date:"d/m/Y H:i" }}</td>
+                <td>
+                  {% for tag in projeto.tags.all %}
+                    <span class="badge bg-dark text-white mr-2">{{ tag.nome }}</span>
+                  {% empty %}
+                    <span class="text-muted">Sem tags</span>
+                  {% endfor %}
+                </td>
+                <td><a href="{% url 'projeto:projeto_detail' projeto.id %}" class="btn btn-sm btn-primary">Ver Detalhes</a></td>
               </tr>
               {% endfor %}
             </tbody>

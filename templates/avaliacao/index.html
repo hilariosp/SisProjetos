@@ -4,12 +4,20 @@
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h1 class="card-title">Listagem de Avaliações</h1>
-          <h4 class="card-description">
-            Aqui você pode visualizar todas as avaliações cadastradas.
-          </h4>
-          <a href="{% url 'avaliacao:avaliacao_add' %}" class="btn btn-primary mb-3">Cadastrar Nova Avaliação</a>
+            <h1 class="card-title">Listagem de Avaliações</h1>
+            <h4 class="card-description">
+                Aqui você pode visualizar todas as avaliações cadastradas.
+            </h4>
+        <a href="{% url 'avaliacao:avaliacao_add' %}" class="btn btn-primary mb-3">Cadastrar Nova Avaliação</a>
+        {% if messages %}
+            {% for message in messages %}
+              <div class="text-center alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+        {% endif %}
                 <div class="table-responsive">
+                    {% if avaliacaos %}
                     <table class="table">
                         <thead>
                             <tr>
@@ -35,11 +43,10 @@
                                     <a href="{% url 'avaliacao:avaliacao_delete' id_avaliacao=avaliacao.id %}" class="btn btn-danger btn-sm">Excluir</a>
                                 </td>
                             </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="5" class="text-center">Nenhuma avaliação encontrada.</td>
-                            </tr>
                             {% endfor %}
+                    {% else %}
+                        Nenhuma avaliação encontrada.
+                    {% endif %}
                         </tbody>
                     </table>
                 </div>

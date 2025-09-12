@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+
 <div class="row">
   <div class="col-12 grid-margin stretch-card">
     <div class="card">
@@ -10,7 +11,13 @@
         </h4>
 
         <a href="{% url 'projeto:projeto_add' %}" class="btn btn-primary mb-3">Cadastrar Novo Projeto</a>
-
+        {% if messages %}
+            {% for message in messages %}
+              <div class="text-center alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+        {% endif %}
         {% if projetos %}
         <div class="table-responsive"> 
           <table class="table"> 
@@ -37,7 +44,7 @@
                 <td>{{ projeto.data_atualizacao|date:"d/m/Y H:i" }}</td>
                 <td>
                   {% for tag in projeto.tags.all %}
-                  <label class="badge badge-dark">{{ tag.nome }}</label>
+                  <label class="badge badge-dark mr-2">{{ tag.nome }}</label>
                   {% empty %}
                     Nenhuma tag
                   {% endfor %}

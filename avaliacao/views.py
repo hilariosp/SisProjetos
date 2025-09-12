@@ -7,6 +7,7 @@ from criterio.models import Criterio
 from .forms import AvaliacaoForm, NotaCriterioFormSet, NotaCriterioUpdateFormSet
 from django.forms import modelformset_factory
 from usuario.models import Usuario
+from django.contrib import messages
 
 @login_required
 @permission_required('avaliacao.view_avaliacao', raise_exception=True)
@@ -23,6 +24,9 @@ def detail(request, id_avaliacao):
 @login_required
 @permission_required('avaliacao.add_avaliacao', raise_exception=True)
 def add(request):
+    if request.user.is_superuser:
+        messages.error(request, 'Superusuários não podem adicionar avaliações. Por favor, use uma conta de usuário comum.')
+        return redirect('avaliacao:avaliacao_index')
     criterios = Criterio.objects.all()
     initial_data = [{'criterio_id': c.id} for c in criterios]
     
@@ -49,7 +53,7 @@ def add(request):
                     )
 
             avaliacao.recalcular_e_salvar_nota_final()
-            return redirect('avaliacao:avaliacao_detail', id_avaliacao=avaliacao.pk)
+            return redirect('avaliacao:avaliacao_index', id_avaliacao=avaliacao.pk)
 
     else:
         avaliacao_form = AvaliacaoForm()
@@ -68,6 +72,9 @@ def add(request):
 @login_required
 @permission_required('avaliacao.change_avaliacao', raise_exception=True)
 def update(request, id_avaliacao):
+    if request.user.is_superuser:
+        messages.error(request, 'Superusuários não podem editar avaliações. Por favor, use uma conta de usuário comum.')
+        return redirect('avaliacao:avaliacao_index')
     avaliacao = get_object_or_404(Avaliacao.objects.prefetch_related('notas_criterios__criterio'), pk=id_avaliacao)
     
     if request.method == 'POST':
@@ -83,7 +90,7 @@ def update(request, id_avaliacao):
 
             avaliacao.recalcular_e_salvar_nota_final()
             
-            return redirect('avaliacao:avaliacao_detail', id_avaliacao=avaliacao.pk)
+            return redirect('avaliacao:avaliacao_index', id_avaliacao=avaliacao.pk)
     else:
         avaliacao_form = AvaliacaoForm(instance=avaliacao)
         formset = NotaCriterioUpdateFormSet(queryset=avaliacao.notas_criterios.all())

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Usuario 
 from .forms import UsuarioForm, UsuarioEditForm
+from django.contrib import messages
 
 @login_required
 @permission_required('usuario.view_usuario', raise_exception=True)

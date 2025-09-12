@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .models import Projeto
 from .forms import ProjetoForm
@@ -21,13 +22,24 @@ def detail(request, id_projeto):
 @login_required
 @permission_required('projeto.add_projeto', raise_exception=True)
 def add(request):
+
+    if request.user.is_superuser:
+        messages.error(request, 'Superusuários não podem adicionar projetos. Por favor, use uma conta de usuário comum.')
+        return redirect('projeto:projeto_index')
+
     if request.method == 'POST':
         form = ProjetoForm(request.POST)
         if form.is_valid():
+            try:
+                usuario = Usuario.objects.get(pk=request.user.pk)
+            except Usuario.DoesNotExist:
+                messages.error(request, 'Seu usuário não possui um perfil associado para criar projetos.')
+                return render(request, 'projeto/add.html', {'form': form})
+
             projeto_instance = form.save(commit=False)
-            projeto_instance.autor = Usuario.objects.get(id=request.user.id)
-            projeto_instance.save()            
-            form.save_m2m()            
+            projeto_instance.autor = usuario
+            projeto_instance.save()
+            form.save_m2m()
             return redirect('projeto:projeto_index')
     else:
         form = ProjetoForm()
@@ -37,6 +49,10 @@ def add(request):
 @login_required
 @permission_required('projeto.change_projeto', raise_exception=True)
 def update(request, id_projeto):
+
+    if request.user.is_superuser:
+        messages.error(request, 'Superusuários não podem editar projetos. Por favor, use uma conta de usuário comum.')
+        return redirect('projeto:projeto_index')
     projeto = Projeto.objects.get(id=id_projeto)
 
     if request.method == 'POST':
