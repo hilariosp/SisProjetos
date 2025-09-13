@@ -18,9 +18,9 @@ Depois, carregue o sistema de desenvolvimento do programa
 
 **Integrantes do grupo:**
 
-HILÁRIA SARAIVA PEREIRA
-HILÁRIO SARAIVA PEREIRA
-JOSÉ PEDRO COSTA ALVES DIONÍSIO
+ HILÁRIA SARAIVA PEREIRA,
+ HILÁRIO SARAIVA PEREIRA,
+ JOSÉ PEDRO COSTA ALVES DIONÍSIO
 
 **Instruções de Acesso**
 
