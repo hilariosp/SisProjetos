@@ -10,7 +10,7 @@ Primeiro, aplique as migrações do banco de dados.
 
 *py manage.py migrate*
 
-Após isso, execute *py manage.py runserver* para executar o sistema em sua maquina local.
+Após isso, execute *py manage.py runserver* para rodar o sistema em sua maquina local.
 
 Depois, carregue o sistema de desenvolvimento do programa
 
